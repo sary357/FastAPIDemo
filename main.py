@@ -6,26 +6,25 @@ import os
 
 from typing import Optional
 
-from fastapi import FastAPI, Request, Response, status
+from fastapi import FastAPI, HTTPException, Request, Response, status
 import json
 app = FastAPI() 
 
 
 ENCODEING="utf-8"
 
-@app.post("/save-vote", status_code=status.HTTP_200_OK)
+@app.post("/save-vote", status_code=status.HTTP_200_OK, response_model=str)
 async def save_vote(req:Request,res:Response):
     c=await req.body()
     try:
         decoded_content=c.decode(ENCODEING)
         if is_valid_request_body(decoded_content):
             logger.info(decoded_content.replace("\n",""))
-            return
+            return ""
     except Exception as e:
         logger.error("Invalid user input: "+c)
         logger.error(e)
-    res.status_code = status.HTTP_400_BAD_REQUEST
-        
+    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid request body")
 
 def is_valid_request_body(body) -> bool:
     if body is None:
