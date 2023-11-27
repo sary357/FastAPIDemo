@@ -103,4 +103,4 @@ $ python scripts/process_log.py log/access.log /tmp/user_input.log
 - After running the command, you can see the user's input in the file `/tmp/user_input.log`.
 - P.S.:
   - The log file `log/access.log` will be rotated every day. The old log file will be saved as `log/access.log.YYYY-MM-DD`. My setting will not remove any log file. So, you can get all of the user's input from the log file again.
-  - DON'T MODIFY any log file. Otherwise, the script `process_log.py` will not work.
+  - DON'T MODIFY any log file in `log/`. Otherwise, the script `process_log.py` will not work.
