@@ -1,8 +1,8 @@
 # FastAPIDemo
-## 1. 项目介绍
+## 1. Project Introduction
 This project is used to save all input into a file as long as it is a POST request.
 
-## 2. 项目结构
+## 2. Folder Structure
 ```
 ├── README.md: Introduction
 ├── main.py: main file
@@ -38,7 +38,7 @@ or
 $ uvicorn --port 8081  main:app --reload --log-config conf/logging.conf
 ```
 
-- Then, you can access the API by http://localhost:8081/save-vote. You can test it with the command `curl`. The following is a correct response. As you can see here, status code is http `200` (OK).
+- Then, you can access the API by http://localhost:8081/save-vote. You can test it with the command `curl`. The following is the response when receiving a valid request. As you can see here, status code is http `200` (OK) and `null` body.
 
 ```bash
 $ curl --verbose -X POST http://localhost:8081/save-vote -d '{"key1":"value1", "key2":"value2}'
@@ -63,7 +63,7 @@ Note: Unnecessary use of -X or --request, POST is already inferred.
 
 ``` 
 
-- The following example is an incorrect response. As you can see here, status code is http `400` (Bad Request).
+-  The following is the response when receiving an invalid request. As you can see here, status code is http `400` (Bad Request) and `null` body.
 ```bash
 $ curl --verbose -X POST http://localhost:8081/save-vote -d ''
 Note: Unnecessary use of -X or --request, POST is already inferred.
