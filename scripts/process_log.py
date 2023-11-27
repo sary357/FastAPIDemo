@@ -16,7 +16,7 @@ def process_log(log_file_path:str, out_file_path:str):
     with open(log_file_path) as f:
         with open(out_file_path, "w+") as out:
             for line in f:
-                if "save_vote" in line and "Process" in line and "MainThread" in line:
+                if "save_vote" in line and "Process" in line and "MainThread" in line and "INFO" in line:
                     timestamp=line.split(': ')[0]
                     user_input=line.split("save_vote")[1].split("MainThread")[1].split(')):')[1].strip()
                     user_input_json=json.loads(user_input)
