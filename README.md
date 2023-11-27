@@ -103,4 +103,5 @@ $ python scripts/process_log.py log/access.log /tmp/user_input.log
 - After running the command, you can see the user's input in the file `/tmp/user_input.log`.
 - P.S.:
   - The log file `log/access.log` will be rotated every day. The old log file will be saved as `log/access.log.YYYY-MM-DD`. My setting will not remove any log file. So, you can get all of the user's input from the log file again.
+  - The format of the field `log_time` is `YYYY-MM-DD HH:MM:SS +/-HOUR`. eg: `2021-09-27 07:26:40 +0800`. That means local time is 7:26:40 AM, 27th, September, 2021 and time difference between local time and UTC is 8 hours. UTC time is 23:26:40 PM, 26th, September, 2021.
   - DON'T MODIFY any log file in `log/`. Otherwise, the script `process_log.py` will not work.
