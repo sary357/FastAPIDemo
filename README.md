@@ -96,9 +96,11 @@ $ python test_main.py
 ```
 
 ### 3.3 get user's ouput
-- All of access log including users' input will be saved in `log/access.log`, you can get users' input data and save them in `log/user_input.log` by the following command.
+- All of access log including users' input will be saved in `log/access.log`, you can get users' input data and save them in `/tmp/user_input.log` by the following command.
 ```python
-$ python scripts/process_log.py log/access.log log/user_input.log
+$ python scripts/process_log.py log/access.log ~/user_input.log
 ```
-- After running the command, you can see the user's input in the file `log/user_input.log`.
-- Note: The log file `log/access.log` will be rotated every day. The old log file will be saved as `log/access.log.YYYY-MM-DD`. My setting will not remove any log file. So, you can get all of the user's input from the log file again.
+- After running the command, you can see the user's input in the file `/tmp/user_input.log`.
+- P.S.:
+  - The log file `log/access.log` will be rotated every day. The old log file will be saved as `log/access.log.YYYY-MM-DD`. My setting will not remove any log file. So, you can get all of the user's input from the log file again.
+  - DON'T MODIFY any log file. Otherwise, the script `process_log.py` will not work.
