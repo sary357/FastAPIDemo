@@ -10,11 +10,14 @@ from fastapi import FastAPI, Request, Response, status
 
 app = FastAPI() 
 
+ENCODEING="utf-8"
+
 @app.post("/save-vote", status_code=status.HTTP_200_OK)
 async def save_vote(req:Request,res:Response):
     c=await req.body()
     if is_valid_request_body(c):
-        logger.info(c)
+        c=c.decode(ENCODEING)
+        logger.info(c.replace("\n",""))
         return
     res.status_code = status.HTTP_400_BAD_REQUEST
         
