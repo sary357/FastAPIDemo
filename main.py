@@ -8,9 +8,9 @@ from typing import Optional
 
 from fastapi import FastAPI, Request, Response, status
 
-app = FastAPI() # 建立一個 Fast API application
+app = FastAPI() 
 
-@app.post("/save-vote", status_code=status.HTTP_200_OK) # 指定 api 路徑 (get方法)
+@app.post("/save-vote", status_code=status.HTTP_200_OK)
 async def save_vote(req:Request,res:Response):
     c=await req.body()
     if is_valid_request_body(c):
