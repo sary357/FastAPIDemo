@@ -98,7 +98,7 @@ $ python test_main.py
 ### 3.3 get user's ouput
 - All of access log including users' input will be saved in `log/access.log`, you can get users' input data and save them in `/tmp/user_input.log` by the following command.
 ```python
-$ python scripts/process_log.py log/access.log ~/user_input.log
+$ python scripts/process_log.py log/access.log /tmp/user_input.log
 ```
 - After running the command, you can see the user's input in the file `/tmp/user_input.log`.
 - P.S.:
