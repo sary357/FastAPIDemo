@@ -10,6 +10,6 @@ def test_save_vote():
 def test_save_vote_invalid_request():
     response = client.post(
         "/save-vote",
-        #json="",  # 不傳入 JSON 字串，應該觸發 400 錯誤
+        content=b"abc",  # 不傳入 JSON 字串，應該觸發 400 錯誤
     )
     assert response.status_code == 400
