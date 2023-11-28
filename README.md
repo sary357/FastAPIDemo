@@ -14,7 +14,8 @@ This project is used to save all input into a file as long as it is a POST reque
 ├── scripts
 |   └── process_log.py: extract user input from the log file
 └── logs
-    └── access.log: log file
+    └── access.log: log file for all kinds of access
+    └── user.log: log file for user input
 ```
 
 ## 3. How can I run it?
@@ -96,12 +97,13 @@ $ python test_main.py
 ```
 
 ### 3.3 get user's ouput
-- All of access log including users' input will be saved in `log/access.log`, you can get users' input data and save them in `/tmp/user_input.log` by the following command.
+- All of access log including users' input will be saved in `log/user.log`, you can get users' input data and save them in `/tmp/user_input.log` by the following command.
 ```python
-$ python scripts/process_log.py log/access.log /tmp/user_input.log
+$ python scripts/process_log.py log/user.log /tmp/user_input.log
 ```
 - After running the command, you can see the user's input in the file `/tmp/user_input.log`.
 - P.S.:
-  - The log file `log/access.log` will be rotated every day. The old log file will be saved as `log/access.log.YYYY-MM-DD`. My setting will not remove any log file. So, you can get all of the user's input from the log file again.
+  - The log file `log/access.log` will be rotated EVERY DAY. The old log file will be saved as `log/access.log.YYYY-MM-DD`. My setting will keep 7 `log/access.log` files. If you want to change the setting, you can modify the file `conf/logging.conf`.
+  - The log file `log/user.log` will be NOT rotated and will not be removed. If you want to change the setting, you can modify the file `conf/logging.conf`.
   - The format of the field `log_time` is `YYYY-MM-DD HH:MM:SS +/-HOUR`. eg: `2021-09-27 07:26:40 +0800`. That means local time is 7:26:40 AM, 27th, September, 2021 and time difference between local time and UTC is 8 hours. UTC time is 23:26:40 PM, 26th, September, 2021.
   - DON'T MODIFY any log file in `log/`. Otherwise, the script `process_log.py` will not work.

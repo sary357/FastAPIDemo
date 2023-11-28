@@ -19,7 +19,7 @@ async def save_vote(req:Request,res:Response):
     try:
         decoded_content=c.decode(ENCODEING)
         if is_valid_request_body(decoded_content):
-            logger.info(decoded_content.replace("\n",""))
+            logger.critical(decoded_content.replace("\n",""))
             return ""
     except Exception as e:
         logger.error("Invalid user input: "+c)
