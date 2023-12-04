@@ -39,3 +39,7 @@ def is_valid_request_body(body) -> bool:
         return False
     
     return True
+
+@app.get("/health-check", status_code=status.HTTP_200_OK, response_model=dict)
+async def health_check():
+    return {"status": "ok"}
