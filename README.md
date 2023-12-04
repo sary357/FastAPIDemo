@@ -104,7 +104,9 @@ $ python scripts/process_log.py log/user.log /tmp/user_input.log
 Start to generate. Output file path: /tmp/user_input.log
 Generate the output file successfully: /tmp/user_input.log
 $ cat /tmp/user_input.log 
-{'phone_number': '+886930900831', 'query': 'This is a question', 'response': 'This is a response', 'log_time': '2023-12-04 12:16:04 +0800'}
+{'phone_number': '+886930900222', 'query': 'This is a question', 'response': 'This is a response', 'log_time': '2023-12-04 12:16:04 +0800'}
+{'phone_number': '+886930900000', 'query': 'This is a sample question', 'response': 'This is a sample response', 'log_time': '2023-12-04 12:21:14 +0800'}
+{'phone_number': '+886930900111', 'query': 'This is a another question', 'response': 'This is a another response', 'log_time': '2023-12-04 13:00:32 +0800'}
 
 ```
 - After running the command, you can see the user's input in the file `/tmp/user_input.log`.
