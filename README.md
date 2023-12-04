@@ -42,6 +42,27 @@ $ uvicorn --port 8081  main:app --reload --log-config conf/logging.conf
 - Then, you can access the API by http://localhost:8081/save-vote. You can test it with the command `curl`. The following is the response when receiving a valid request. As you can see here, status code is http `200` (OK) and a empty string.
 
 ```bash
+$ $ curl --verbose  -X POST http://localhost:8081/save-vote -d '{"phone_number":"+886930900831", "query":"This is a question", "response":"This is a response", "vote":"up"}'
+Note: Unnecessary use of -X or --request, POST is already inferred.
+*   Trying 127.0.0.1:8081...
+* Connected to localhost (127.0.0.1) port 8081 (#0)
+> POST /save-vote HTTP/1.1
+> Host: localhost:8081
+> User-Agent: curl/7.78.0
+> Accept: */*
+> Content-Length: 108
+> Content-Type: application/x-www-form-urlencoded
+> 
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 200 OK
+< date: Mon, 04 Dec 2023 11:57:17 GMT
+< server: uvicorn
+< content-length: 2
+< content-type: application/json
+< 
+* Connection #0 to host localhost left intact
+""
+
 $ curl --verbose  -X POST http://localhost:8081/save-vote -d '{"phone_number":"+886930900831", "query":"This is a question", "response":"This is a response"}'
 Note: Unnecessary use of -X or --request, POST is already inferred.
 *   Trying 127.0.0.1:8081...
@@ -55,14 +76,13 @@ Note: Unnecessary use of -X or --request, POST is already inferred.
 > 
 * Mark bundle as not supporting multiuse
 < HTTP/1.1 200 OK
-< date: Mon, 04 Dec 2023 04:16:04 GMT
+< date: Mon, 04 Dec 2023 11:57:27 GMT
 < server: uvicorn
 < content-length: 2
 < content-type: application/json
 < 
 * Connection #0 to host localhost left intact
 ""
-
 ``` 
 
 -  The following is the response when receiving an invalid request. As you can see here, status code is http `400` (Bad Request) and `null` body.
@@ -88,16 +108,75 @@ Note: Unnecessary use of -X or --request, POST is already inferred.
 * Connection #0 to host localhost left intact
 
 ```
-
-
-### 3.2 Test it
-- You don't need to start anything. Just run the following command.
-```python
-$ python test_main.py
+## 3.1.3 get user's ouput
+- All of access log including users' input will be saved in `~/gogobot-log-api/log/user.log`, you can get users' input data and save them in `/tmp/user_input.log` by the following command.
+```bash
+$ git clone GIT_PROJECT_URL
+$ cd FastAPIDemo
+$ python3 -m venv venv
+$ source venv/bin/activate
+$ pip install -r requirements.txt
+$ python scripts/process_log.py ~/gogobot-log-api/log/user.log /tmp/user_input.log
+Start to generate. Output file path: /tmp/user_input.log
+Generate the output file successfully: /tmp/user_input.log
+```
+- After running the command, you can see the user's input in the file `/tmp/user_input.log`.
+```bash
+# This is the content of the file /tmp/user_input.log
+$ cat /tmp/user_input.log 
+{'phone_number': '+886930900831', 'query': 'This is a question', 'response': 'This is a response', 'vote': 'up', 'log_time': '2023-12-04 11:57:17 +0000'}
+{'phone_number': '+886930900831', 'query': 'This is a question', 'response': 'This is a response', 'log_time': '2023-12-04 11:57:27 +0000'}
 
 ```
 
-### 3.3 get user's ouput
+### 3.2 Run it in docker
+#### 3.2.1 Build docker image
+- You can build the docker image by the following command.
+```bash
+$ docker build -t  gogotechhk/gogobot-log-api:0.1.0 .
+```
+#### 3.2.2 Run the docker image
+- You can run the docker image by the following command.
+```bash
+$ make start-container
+```
+#### 3.2.3 make sure the container is running
+- You don't need to start anything. Just run the following command.
+```bash
+$ docker ps
+CONTAINER ID   IMAGE                                   COMMAND         CREATED         STATUS         PORTS                    NAMES
+629ba0e57926   gogotechhk/gogobot-log-api:0.1.0        "sh start.sh"   7 minutes ago   Up 7 minutes   0.0.0.0:8081->8081/tcp   gogobot-log-api
+```
+#### 3.2.4 Test it
+- You can test it with `curl`
+```bash 
+$ curl --verbose  -X POST http://localhost:8081/save-vote -d '{"phone_number":"+886930900831", "query":"This is a question", "response":"This is a response"}'
+Note: Unnecessary use of -X or --request, POST is already inferred.
+*   Trying 127.0.0.1:8081...
+* Connected to localhost (127.0.0.1) port 8081 (#0)
+> POST /save-vote HTTP/1.1
+> Host: localhost:8081
+> User-Agent: curl/7.78.0
+> Accept: */*
+> Content-Length: 95
+> Content-Type: application/x-www-form-urlencoded
+> 
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 200 OK
+< date: Mon, 04 Dec 2023 11:57:27 GMT
+< server: uvicorn
+< content-length: 2
+< content-type: application/json
+< 
+* Connection #0 to host localhost left intact
+""
+```
+#### 3.2.5 stop the container
+- You can stop the container by the following command.
+```bash
+$ make stop-container
+```
+#### 3.2.6 get user's ouput
 - All of access log including users' input will be saved in `log/user.log`, you can get users' input data and save them in `/tmp/user_input.log` by the following command.
 ```bash
 $ python scripts/process_log.py log/user.log /tmp/user_input.log
@@ -108,11 +187,18 @@ Generate the output file successfully: /tmp/user_input.log
 ```bash
 # This is the content of the file /tmp/user_input.log
 $ cat /tmp/user_input.log 
-{'phone_number': '+886930900222', 'query': 'This is a question', 'response': 'This is a response', 'log_time': '2023-12-04 12:16:04 +0800'}
-{'phone_number': '+886930900000', 'query': 'This is a sample question', 'response': 'This is a sample response', 'log_time': '2023-12-04 12:21:14 +0800'}
-{'phone_number': '+886930900111', 'query': 'This is a another question', 'response': 'This is a another response', 'log_time': '2023-12-04 13:00:32 +0800'}
+{'phone_number': '+886930900831', 'query': 'This is a question', 'response': 'This is a response', 'vote': 'up', 'log_time': '2023-12-04 11:57:17 +0000'}
+{'phone_number': '+886930900831', 'query': 'This is a question', 'response': 'This is a response', 'log_time': '2023-12-04 11:57:27 +0000'}
 
 ```
+## 4. Test it with pytest
+- You don't need to start anything. Just run the following command.
+```bash
+$ python test_main.py
+
+```
+
+
 - P.S.:
   - The log file `log/access.log` will be rotated when file size is about to 10MB. The old log file will be saved as `log/access.log.X` like `log/access.log.1`. My setting will keep last 50 `log/access.log` files. If you want to change the setting, you can modify the file `conf/logging.conf`.
   - The log file `log/user.log` will be NOT rotated and will not be removed. If you want to change the setting, you can modify the file `conf/logging.conf`.
