@@ -42,7 +42,7 @@ $ uvicorn --port 8081  main:app --reload --log-config conf/logging.conf
 - Then, you can access the API by http://localhost:8081/save-vote. You can test it with the command `curl`. The following is the response when receiving a valid request. As you can see here, status code is http `200` (OK) and `null` body.
 
 ```bash
-$ curl --verbose -X POST http://localhost:8081/save-vote -d '{"key1":"value1", "key2":"value2}'
+$ curl --verbose  -X POST http://localhost:8081/save-vote -d '{"phone_number":"+886930900831", "query":"This is a question", "response":"This is a response"}'
 Note: Unnecessary use of -X or --request, POST is already inferred.
 *   Trying 127.0.0.1:8081...
 * Connected to localhost (127.0.0.1) port 8081 (#0)
@@ -50,17 +50,18 @@ Note: Unnecessary use of -X or --request, POST is already inferred.
 > Host: localhost:8081
 > User-Agent: curl/7.78.0
 > Accept: */*
-> Content-Length: 33
+> Content-Length: 95
 > Content-Type: application/x-www-form-urlencoded
 > 
 * Mark bundle as not supporting multiuse
 < HTTP/1.1 200 OK
-< date: Mon, 27 Nov 2023 07:26:40 GMT
+< date: Mon, 04 Dec 2023 04:16:04 GMT
 < server: uvicorn
-< content-length: 4
+< content-length: 2
 < content-type: application/json
 < 
 * Connection #0 to host localhost left intact
+""
 
 ``` 
 
@@ -100,6 +101,11 @@ $ python test_main.py
 - All of access log including users' input will be saved in `log/user.log`, you can get users' input data and save them in `/tmp/user_input.log` by the following command.
 ```python
 $ python scripts/process_log.py log/user.log /tmp/user_input.log
+Start to generate. Output file path: /tmp/user_input.log
+Generate the output file successfully: /tmp/user_input.log
+$ cat /tmp/user_input.log 
+{'phone_number': '+886930900831', 'query': 'This is a question', 'response': 'This is a response', 'log_time': '2023-12-04 12:16:04 +0800'}
+
 ```
 - After running the command, you can see the user's input in the file `/tmp/user_input.log`.
 - P.S.:
