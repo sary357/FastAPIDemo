@@ -109,14 +109,9 @@ Note: Unnecessary use of -X or --request, POST is already inferred.
 
 ```
 ## 3.1.3 get user's ouput
-- All of access log including users' input will be saved in `~/gogobot-log-api/log/user.log`, you can get users' input data and save them in `/tmp/user_input.log` by the following command.
+- All of access log including users' input will be saved in `log/user.log`, you can get users' input data and save them in `/tmp/user_input.log` by the following command.
 ```bash
-$ git clone GIT_PROJECT_URL
-$ cd FastAPIDemo
-$ python3 -m venv venv
-$ source venv/bin/activate
-$ pip install -r requirements.txt
-$ python scripts/process_log.py ~/gogobot-log-api/log/user.log /tmp/user_input.log
+$ python scripts/process_log.py log/user.log /tmp/user_input.log
 Start to generate. Output file path: /tmp/user_input.log
 Generate the output file successfully: /tmp/user_input.log
 ```
@@ -179,6 +174,11 @@ $ make stop-container
 #### 3.2.6 get user's ouput
 - All of access log including users' input will be saved in `log/user.log`, you can get users' input data and save them in `/tmp/user_input.log` by the following command.
 ```bash
+$ git clone GIT_PROJECT_URL
+$ cd FastAPIDemo
+$ python3 -m venv venv
+$ source venv/bin/activate
+$ pip install -r requirements.txt
 $ python scripts/process_log.py log/user.log /tmp/user_input.log
 Start to generate. Output file path: /tmp/user_input.log
 Generate the output file successfully: /tmp/user_input.log
