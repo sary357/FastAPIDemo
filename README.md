@@ -39,7 +39,7 @@ or
 $ uvicorn --port 8081  main:app --reload --log-config conf/logging.conf
 ```
 
-- Then, you can access the API by http://localhost:8081/save-vote. You can test it with the command `curl`. The following is the response when receiving a valid request. As you can see here, status code is http `200` (OK) and `null` body.
+- Then, you can access the API by http://localhost:8081/save-vote. You can test it with the command `curl`. The following is the response when receiving a valid request. As you can see here, status code is http `200` (OK) and a empty string.
 
 ```bash
 $ curl --verbose  -X POST http://localhost:8081/save-vote -d '{"phone_number":"+886930900831", "query":"This is a question", "response":"This is a response"}'
