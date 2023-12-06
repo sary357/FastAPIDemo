@@ -8,14 +8,14 @@ This project is used to save all input into a file as long as it is a POST reque
 ├── main.py: main file
 ├── start.sh: the script to start the project
 ├── test_main.py: test file
-├── requirements.txt
+├── Dockerfile: Dockerfile. Used to create gogobot-log-api docker image.
+├── Makefile: Makefile
+├── requirements.txt: necessary packages to run the project
 ├── conf
 |   └── logging.conf: logging configuration file
-├── scripts
-|   └── process_log.py: extract user input from the log file
-└── logs
-    └── access.log: log file for all kinds of access
-    └── user.log: log file for user input
+└── sql
+    └── create_tables.sql: create initial db. You can use it to create db in your local environment.
+
 ```
 
 ## 3. How can I run it?
@@ -174,7 +174,7 @@ $ cat /tmp/user_input.log
 ## 4. Test it with pytest
 - You don't need to start anything. Just run the following command.
 ```bash
-$ python test_main.py
+$ pytest test_main.py
 
 ```
 
