@@ -36,76 +36,77 @@ $ sh start.sh
 ```
 or 
 ```python
-$ uvicorn --port 8081  main:app --reload --log-config conf/logging.conf
+$ uvicorn --port 8081  main:app --host 0.0.0.0  --reload --log-config conf/logging.conf
 ```
 
-- Then, you can access the API by http://localhost:8081/save-vote. You can test it with the command `curl`. The following is the response when receiving a valid request. As you can see here, status code is http `200` (OK) and a empty string.
+- Then, you can access the API by `http://localhost:8081/v1/vote` or `http://localhost:8081/v1/qa/`. You can test it with the command `curl`. The following is the response when receiving a valid request. As you can see here, status code is http `200` (OK) and a json string `{"status":"ok"}`.
 
 ```bash
-$ $ curl --verbose  -X POST http://localhost:8081/save-vote -d '{"phone_number":"+886930900831", "query":"This is a question", "response":"This is a response", "vote":"up"}'
-Note: Unnecessary use of -X or --request, POST is already inferred.
+# If you'd like to save a question/answer pair, you can use the following command.
+$ curl -X 'POST' --verbose 'http://localhost:8081/v1/qa/'   -H 'accept: application/json'   -H 'Content-Type: application/json'   -d '{  "phone_number": "+8869000000", "query":"QUESTION HERE", "response":"RESPONSE HERE" }'
 *   Trying 127.0.0.1:8081...
 * Connected to localhost (127.0.0.1) port 8081 (#0)
-> POST /save-vote HTTP/1.1
+> POST /v1/vote/ HTTP/1.1
 > Host: localhost:8081
 > User-Agent: curl/7.78.0
-> Accept: */*
-> Content-Length: 108
-> Content-Type: application/x-www-form-urlencoded
+> accept: application/json
+> Content-Type: application/json
+> Content-Length: 87
 > 
 * Mark bundle as not supporting multiuse
 < HTTP/1.1 200 OK
-< date: Mon, 04 Dec 2023 11:57:17 GMT
+< date: Wed, 06 Dec 2023 03:42:57 GMT
 < server: uvicorn
-< content-length: 2
+< content-length: 15
 < content-type: application/json
 < 
 * Connection #0 to host localhost left intact
-""
+{"status":"ok"}
 
-$ curl --verbose  -X POST http://localhost:8081/save-vote -d '{"phone_number":"+886930900831", "query":"This is a question", "response":"This is a response"}'
-Note: Unnecessary use of -X or --request, POST is already inferred.
+# If you'd like to save a vote, you can use the following command.
+$ curl -X 'POST' --verbose  'http://localhost:8081/v1/vote/'   -H 'accept: application/json'   -H 'Content-Type: application/json'   -d '{  "phone_number": "+8869000000", "query":"QUESTION HERE", "vote":"UP/DOWN" }'
 *   Trying 127.0.0.1:8081...
 * Connected to localhost (127.0.0.1) port 8081 (#0)
-> POST /save-vote HTTP/1.1
+> POST /v1/vote/ HTTP/1.1
 > Host: localhost:8081
 > User-Agent: curl/7.78.0
-> Accept: */*
-> Content-Length: 95
-> Content-Type: application/x-www-form-urlencoded
+> accept: application/json
+> Content-Type: application/json
+> Content-Length: 87
 > 
 * Mark bundle as not supporting multiuse
 < HTTP/1.1 200 OK
-< date: Mon, 04 Dec 2023 11:57:27 GMT
+< date: Wed, 06 Dec 2023 03:42:57 GMT
 < server: uvicorn
-< content-length: 2
+< content-length: 15
 < content-type: application/json
 < 
 * Connection #0 to host localhost left intact
-""
+{"status":"ok"}
 ``` 
 
--  The following is the response when receiving an invalid request. As you can see here, status code is http `400` (Bad Request) and `null` body.
+-  The following is the response when receiving an invalid request. As you can see here, status code is http `4XX` and some json formatted message.
 ```bash
-$ curl --verbose -X POST http://localhost:8081/save-vote -d ''
+$ curl  --verbose -X 'POST'   'http://localhost:8081/v1/vote/'   -H 'accept: application/json'   -H 'Content-Type: application/json'   -d '{  "phone_number": "+8869000000", "query":"QUESTION"}'
 Note: Unnecessary use of -X or --request, POST is already inferred.
 *   Trying 127.0.0.1:8081...
 * Connected to localhost (127.0.0.1) port 8081 (#0)
-> POST /save-vote HTTP/1.1
+> POST /v1/vote/ HTTP/1.1
 > Host: localhost:8081
 > User-Agent: curl/7.78.0
-> Accept: */*
-> Content-Length: 0
-> Content-Type: application/x-www-form-urlencoded
+> accept: application/json
+> Content-Type: application/json
+> Content-Length: 53
 > 
 * Mark bundle as not supporting multiuse
-< HTTP/1.1 400 Bad Request
-< date: Mon, 27 Nov 2023 07:28:59 GMT
+< HTTP/1.1 422 Unprocessable Entity
+< date: Wed, 06 Dec 2023 03:44:25 GMT
 < server: uvicorn
-< content-length: 4
+< content-length: 184
 < content-type: application/json
 < 
 * Connection #0 to host localhost left intact
+{"detail":[{"type":"missing","loc":["body","vote"],"msg":"Field required","input":{"phone_number":"+8869000000","query":"QUESTION"},"url":"https://errors.pydantic.dev/2.5/v/missing"}]}
 
 ```
 #### 3.1.3 get user's ouput
@@ -143,29 +144,8 @@ CONTAINER ID   IMAGE                                   COMMAND         CREATED  
 629ba0e57926   gogotechhk/gogobot-log-api:0.1.0        "sh start.sh"   7 minutes ago   Up 7 minutes   0.0.0.0:8081->8081/tcp   gogobot-log-api
 ```
 #### 3.2.4 Test it
-- You can test it with `curl`
-```bash 
-$ curl --verbose  -X POST http://localhost:8081/save-vote -d '{"phone_number":"+886930900831", "query":"This is a question", "response":"This is a response"}'
-Note: Unnecessary use of -X or --request, POST is already inferred.
-*   Trying 127.0.0.1:8081...
-* Connected to localhost (127.0.0.1) port 8081 (#0)
-> POST /save-vote HTTP/1.1
-> Host: localhost:8081
-> User-Agent: curl/7.78.0
-> Accept: */*
-> Content-Length: 95
-> Content-Type: application/x-www-form-urlencoded
-> 
-* Mark bundle as not supporting multiuse
-< HTTP/1.1 200 OK
-< date: Mon, 04 Dec 2023 11:57:27 GMT
-< server: uvicorn
-< content-length: 2
-< content-type: application/json
-< 
-* Connection #0 to host localhost left intact
-""
-```
+- Please refer to the section `3.1.2` to test it.
+
 #### 3.2.5 stop the container
 - You can stop the container by the following command.
 ```bash
