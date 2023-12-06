@@ -27,15 +27,32 @@ class QA(BaseModel):
     query: str
     response: str
 
-@app.post("/v1/vote/")
+@app.post("/v2/vote/")
 async def save_vote(vote: Vote):
     logger.info(vote)
     return {"status": "ok"}
 
-@app.post("/v1/qa/")
+@app.post("/v2/qa/")
 async def save_query(qa: QA):
     logger.info(qa)
     return {"status": "ok"}
+
+@app.get("/v2/healthcheck")
+async def health_check():
+    return {"status": "ok"}
+
+@app.post("/v1/save-vote", status_code=status.HTTP_200_OK, response_model=str)
+async def save_vote(req:Request,res:Response):
+    c=await req.body()
+    try:
+        decoded_content=c.decode(ENCODEING)
+        if is_valid_request_body(decoded_content):
+            logger.critical(decoded_content.replace("\n",""))
+            return ""
+    except Exception as e:
+        logger.error("Invalid user input: "+c)
+        logger.error(e)
+    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid request body")
 
 def is_valid_request_body(body) -> bool:
     if body is None:
@@ -51,6 +68,6 @@ def is_valid_request_body(body) -> bool:
     
     return True
 
-@app.get("/healthcheck")
+@app.get("/v1/health-check", status_code=status.HTTP_200_OK, response_model=dict)
 async def health_check():
     return {"status": "ok"}
