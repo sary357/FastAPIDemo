@@ -12,7 +12,7 @@ class sessionGenerator:
         self.session = None
 
     def __get_db_conn_str__(self)->str:
-        # TODO: please replace this part with your own database engine
+        # TODO: please replace this part with your own database connection string
         #       ideally, you should use connection saved in crdentials store like vault
         return 'postgresql+psycopg2://postgres:CHANGE_ME@db:5432/gogobot_log' # for docker-compose
         # return 'postgresql+psycopg2://postgres:CHANGE_ME@localhost:5432/gogobot_log' # for local environment
