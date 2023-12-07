@@ -8,18 +8,22 @@ from typing import Optional
 
 from fastapi import FastAPI, HTTPException, Request, Response, status
 import json
+from src.v2 import voteProcessor
+from src.v2 import SessionGenerator
 app = FastAPI() 
 
 
 ENCODEING="utf-8"
 
 # Class 1: Vote
-# field: phone_number (str), query(str), response(str), vote(str)
+# field: id(int), phone_number (str), query(str), response(str), vote(str)
 # Class 2: QA
 # field: phone_number (str), query(str), response(str)
+
 class Vote(BaseModel):
-    phone_number: str
-    query: str
+    id: Optional[int] = None
+    phone_number: Optional[str] = None
+    query: Optional[str] = None
     vote: str
 
 class QA(BaseModel):
@@ -29,13 +33,18 @@ class QA(BaseModel):
 
 @app.post("/v2/vote/")
 async def save_vote(vote: Vote):
-    logger.info(vote)
+    logger.info('Got 1 vote: %s', vote)
+    if vote.id:
+        voteProcessor.save_vote_by_id(id=vote.id, user_vote=vote.vote)
+    else:
+        voteProcessor.save_vote(user_query=vote.query, user_phone=vote.phone_number, user_vote=vote.vote)
     return {"status": "ok"}
 
 @app.post("/v2/qa/")
 async def save_query(qa: QA):
-    logger.info(qa)
-    return {"status": "ok"}
+    logger.info('Got 1 QA: %s', qa)
+    id=voteProcessor.save_query(user_query=qa.query, user_response=qa.response, user_phone=qa.phone_number)
+    return {"id":id, "status": "ok"}
 
 @app.get("/v2/healthcheck")
 async def health_check():
