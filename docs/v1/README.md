@@ -11,6 +11,11 @@ This project is used to save all input into a file as long as it is a POST reque
 ├── requirements.txt
 ├── conf
 |   └── logging.conf: logging configuration file
+├── docs
+|   ├── v1
+|   |   └── README.md: README.md for v1
+|   └── v2
+|       └── README.md: README.md for v2
 ├── scripts
 |   └── process_log.py: extract user input from the log file
 └── logs
