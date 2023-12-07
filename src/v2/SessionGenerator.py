@@ -14,7 +14,8 @@ class sessionGenerator:
     def __get_db_conn_str__(self)->str:
         # TODO: please replace this part with your own database engine
         #       ideally, you should use connection saved in crdentials store like vault
-        return 'postgresql+psycopg2://postgres:CHANGE_ME@db:5432/gogobot_log'
+        return 'postgresql+psycopg2://postgres:CHANGE_ME@db:5432/gogobot_log' # for docker-compose
+        # return 'postgresql+psycopg2://postgres:CHANGE_ME@localhost:5432/gogobot_log' # for local environment
     
     def get_session(self):
         if self.session is None:

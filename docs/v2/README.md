@@ -22,7 +22,7 @@ This project is used to save all input into a file as long as it is a POST reque
 ├── requirements.txt: necessary packages to run the project
 |── docker-compose.yml: docker-compose.yml. Used to create gogobot-log-api docker image and gogobot-log-db docker image.
 ├── scripts
-|   └── process_log.py: extract user input from the log file
+|   └── process_log.py: extract user input from the log file. This is only for v1.
 ├── conf
 |   └── logging.conf: logging configuration file
 └── sql
@@ -134,12 +134,20 @@ Note: Unnecessary use of -X or --request, POST is already inferred.
 #### 3.2.1 Build docker image
 - You can build the docker image by the following command.
 ```bash
-$ docker build -t  gogotechhk/gogobot-log-api:0.2.0 .
+# TAG_VERION is the version of the docker image like 0.2.0
+$ docker build -t  gogotechhk/gogobot-log-api:TAG_VERSION .
+
+# or you can udpate TAG_VERSION defined in Makefile, then use "make build" to build the docker image.
+$ make build
 ```
 #### 3.2.2 Run the docker image
 - You can run the docker image by the following command.
 ```bash
+# if you'd like start all containers defined in docker-compose.yml, you can use the following command.
 $ docker-compose up -d
+
+# or you can use "make start-all" to start all containers defined in docker-compose.yml.
+$ make start-all
 ```
 #### 3.2.3 create table schema
 - Because [docker-compose.yml](../../docker-compose.yml) already defined a postgresql DB, what you need to do is to execute the [SQL](../../sql/create_tables.sql) to create all tables.
@@ -158,11 +166,37 @@ b67f9aa4ff8f   gogotechhk/gogobot-log-api:0.2.0        "sh start.sh"            
 #### 3.2.5 stop the container
 - You can stop the container by the following command.
 ```bash
+# if you'd like stop all containers defined in docker-compose.yml, you can use the following command.
 $  docker-compose stop
+
+# or you can use "make stop-all" to stop all containers defined in docker-compose.yml.
+$ make stop-all
 ```
 
+#### 3.2.6 other options
+- If you hope to execute/stop db container separately, you can use the following commands.
+```bash
+# start db container
+$ docker-compose up -d db
+
+# or you can use "make start-db" to start db container.
+$ make start-db
+
+# stop db container
+$ docker-compose stop db
+
+# or you can use "make start-db" to start db container.
+$ make stop-db
+```
+
+
 ## 4. Test it with pytest
-- You don't need to start anything. Just run the following command.
+- Please start db container before running pytest.
+```bash
+$ make start-db
+```
+- Update the database connection string in the file [SessionGenerator.py](../../src/v2/SessionGenerator.py) to your own database connection string or change the function `def __get_db_conn_str__(self)->str:`  in the file [SessionGenerator.py](../../src/v2/SessionGenerator.py). Please use correct connection string.
+- You can run pytest by the following command.
 ```bash
 $ pytest test_main.py
 
