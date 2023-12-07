@@ -36,8 +36,10 @@ async def save_vote(vote: Vote):
     logger.info('Got 1 vote: %s', vote)
     if vote.id:
         voteProcessor.save_vote_by_id(id=vote.id, user_vote=vote.vote)
-    else:
+    elif vote.query and vote.phone_number:
         voteProcessor.save_vote(user_query=vote.query, user_phone=vote.phone_number, user_vote=vote.vote)
+    else:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid request body")
     return {"status": "ok"}
 
 @app.post("/v2/qa/")
