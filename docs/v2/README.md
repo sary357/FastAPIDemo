@@ -5,6 +5,11 @@ This project is used to save all input into a file as long as it is a POST reque
 ## 2. Folder Structure
 ```
 ├── README.md: Introduction
+├── docs
+|   ├── v1
+|   |   └── README.md: README.md for v1
+|   └── v2
+|       └── README.md: README.md for v2
 ├── main.py: main file
 ├── start.sh: the script to start the project
 ├── test_main.py: test file
@@ -29,7 +34,12 @@ $ source venv/bin/activate
 $ pip install -r requirements.txt
 ```
 
-#### 3.1.2. Run the project
+#### 3.1.2. prepare the database
+- Please create a PostgreSQL database in your local env and execute the [SQL](../../sql/create_tables.sql) to create the tables.
+- change the database connection string in the file [SessionGenerator.py](../../src/v2/SessionGenerator.py) to your own database connection string or change the function `def __get_db_conn_str__(self)->str:`  in the file [SessionGenerator.py](../../src/v2/SessionGenerator.py). It's supposed to use environment variable to store the database connection string. But I don't want to expose my database connection string in the git repo. So, I just hard code it here.
+
+
+#### 3.1.3. Run the project
 - You can launch the project by the script `start.sh` or by the command `uvicorn`.
 ```bash
 $ sh start.sh
@@ -39,32 +49,34 @@ or
 $ uvicorn --port 8081  main:app --host 0.0.0.0  --reload --log-config conf/logging.conf
 ```
 
-- Then, you can access the API by `http://localhost:8081/v2/vote` or `http://localhost:8081/v2/qa/`. You can test it with the command `curl`. The following is the response when receiving a valid request. As you can see here, status code is http `200` (OK) and a json string `{"status":"ok"}`.
+- Then, you can access the API by `http://localhost:8081/v2/vote` or `http://localhost:8081/v2/qa/`. You can test it with the command `curl`. The following is the response when receiving a valid request. As you can see here, status code is http `200` (OK) and a json string `{"id":ID, "status":"ok"}`.
 
 ```bash
 # If you'd like to save a question/answer pair, you can use the following command.
-$ curl -X 'POST' --verbose 'http://localhost:8081/v2/qa/'   -H 'accept: application/json'   -H 'Content-Type: application/json'   -d '{  "phone_number": "+8869000000", "query":"QUESTION HERE", "response":"RESPONSE HERE" }'
+$ curl --verbose  -H 'accept: application/json'   -H 'Content-Type: application/json'  -X POST http://localhost:8081/v2/qa/ -d '{"phone_number":"+886930900831", "query":"This is my question", "response":"a response"}'
+Note: Unnecessary use of -X or --request, POST is already inferred.
 *   Trying 127.0.0.1:8081...
 * Connected to localhost (127.0.0.1) port 8081 (#0)
-> POST /v2/vote/ HTTP/1.1
+> POST /v2/qa/ HTTP/1.1
 > Host: localhost:8081
 > User-Agent: curl/7.78.0
 > accept: application/json
 > Content-Type: application/json
-> Content-Length: 87
+> Content-Length: 88
 > 
 * Mark bundle as not supporting multiuse
 < HTTP/1.1 200 OK
-< date: Wed, 06 Dec 2023 03:42:57 GMT
+< date: Thu, 07 Dec 2023 04:09:11 GMT
 < server: uvicorn
-< content-length: 15
+< content-length: 22
 < content-type: application/json
 < 
 * Connection #0 to host localhost left intact
-{"status":"ok"}
+{"id":6,"status":"ok"}
 
-# If you'd like to save a vote, you can use the following command.
-$ curl -X 'POST' --verbose  'http://localhost:8081/v2/vote/'   -H 'accept: application/json'   -H 'Content-Type: application/json'   -d '{  "phone_number": "+8869000000", "query":"QUESTION HERE", "vote":"UP/DOWN" }'
+# If you'd like to save a vote with phone number + query, you can use the following command.
+$ curl --verbose  -H 'accept: application/json'   -H 'Content-Type: application/json'  -X POST http://localhost:8081/v2/vote/ -d '{"phone_number":"+886930900831", "query":"This is my question", "vote":"up"}'
+Note: Unnecessary use of -X or --request, POST is already inferred.
 *   Trying 127.0.0.1:8081...
 * Connected to localhost (127.0.0.1) port 8081 (#0)
 > POST /v2/vote/ HTTP/1.1
@@ -72,11 +84,11 @@ $ curl -X 'POST' --verbose  'http://localhost:8081/v2/vote/'   -H 'accept: appli
 > User-Agent: curl/7.78.0
 > accept: application/json
 > Content-Type: application/json
-> Content-Length: 87
+> Content-Length: 76
 > 
 * Mark bundle as not supporting multiuse
 < HTTP/1.1 200 OK
-< date: Wed, 06 Dec 2023 03:42:57 GMT
+< date: Thu, 07 Dec 2023 04:09:48 GMT
 < server: uvicorn
 < content-length: 15
 < content-type: application/json
@@ -120,22 +132,26 @@ $ docker build -t  gogotechhk/gogobot-log-api:0.2.0 .
 #### 3.2.2 Run the docker image
 - You can run the docker image by the following command.
 ```bash
-$ make start-container
+$ docker-compose up -d
 ```
+#### 3.2.3 create table schema
+- Because [docker-compose.yml](../../docker-compose.yml) already defined a postgresql DB, what you need to do is to execute the [SQL](../../sql/create_tables.sql) to create all tables.
+
 #### 3.2.3 make sure the container is running
 - check the container is running by the following command.
 ```bash
 $ docker ps
-CONTAINER ID   IMAGE                                   COMMAND         CREATED         STATUS         PORTS                    NAMES
-629ba0e57926   gogotechhk/gogobot-log-api:0.2.0        "sh start.sh"   7 minutes ago   Up 7 minutes   0.0.0.0:8081->8081/tcp   gogobot-log-api
+CONTAINER ID   IMAGE                                   COMMAND                  CREATED          STATUS          PORTS                    NAMES
+b67f9aa4ff8f   gogotechhk/gogobot-log-api:0.2.0        "sh start.sh"            14 seconds ago   Up 13 seconds   0.0.0.0:8081->8081/tcp   gogobot-log-api
+7deb1d9f09f3   postgres                                "docker-entrypoint.s…"   24 hours ago     Up 13 seconds   0.0.0.0:5432->5432/tcp   gogobot-log-db
 ```
 #### 3.2.4 Test it
-- Please refer to the section `3.1.2` to test it.
+- Please refer to the section `3.1.3` to test it.
 
 #### 3.2.5 stop the container
 - You can stop the container by the following command.
 ```bash
-$ make stop-container
+$  docker-compose stop
 ```
 
 ## 4. Test it with pytest
