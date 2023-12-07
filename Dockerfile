@@ -6,6 +6,7 @@ RUN pip3 install --no-cache --upgrade pip setuptools
 WORKDIR /opt
 
 COPY conf /opt/conf
+COPY src /opt/src
 COPY main.py /opt/main.py
 COPY start.sh /opt/start.sh
 COPY requirements.txt /opt/requirements.txt
