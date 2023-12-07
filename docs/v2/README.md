@@ -10,12 +10,19 @@ This project is used to save all input into a file as long as it is a POST reque
 |   |   └── README.md: README.md for v1
 |   └── v2
 |       └── README.md: README.md for v2
+|── src
+|   └── v2
+|       ├── SessionGenerator.py: generate database session
+|       └── voteProcessor.py: deal with vote request and save it into database
 ├── main.py: main file
 ├── start.sh: the script to start the project
 ├── test_main.py: test file
 ├── Dockerfile: Dockerfile. Used to create gogobot-log-api docker image.
-├── Makefile: Makefile
+├── Makefile: only for creating gogobot-log-api docker image. 
 ├── requirements.txt: necessary packages to run the project
+|── docker-compose.yml: docker-compose.yml. Used to create gogobot-log-api docker image and gogobot-log-db docker image.
+├── scripts
+|   └── process_log.py: extract user input from the log file
 ├── conf
 |   └── logging.conf: logging configuration file
 └── sql
