@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 class vote(Base):
     __tablename__ = 'votes'
     '''
-    phone varchar(100) not null,
+    phone_number varchar(100) not null,
     query varchar(65535) not null,
     response varchar(65535), 
     vote varchar(100),
@@ -21,14 +21,14 @@ class vote(Base):
     query = Column(String(65535))
     response = Column(String(65535))
     vote = Column(String(100))
-    phone = Column(String(100))
+    phone_number = Column(String(100))
     created_at = Column(DateTime, default=datetime.utcnow)
     vote_at = Column(DateTime)
 
 
 def save_query(user_query:str, user_response:str, user_phone:str)->int:
     session = SessionGenerator.sessionGenerator().get_session()
-    qa = vote(query=user_query.strip(), response=user_response.strip(), phone=user_phone.strip())
+    qa = vote(query=user_query, response=user_response, phone_number=user_phone)
     session.add(qa)
     session.commit()
     qa_id = qa.id
@@ -37,7 +37,7 @@ def save_query(user_query:str, user_response:str, user_phone:str)->int:
 
 def save_vote(user_query:str, user_phone:str, user_vote:str):
     session = SessionGenerator.sessionGenerator().get_session()
-    user_vote_to_update=session.query(vote).filter_by(query=user_query.strip(), phone=user_phone.strip()).first()
+    user_vote_to_update=session.query(vote).filter_by(query=user_query, phone_number=user_phone).first()
     if user_vote_to_update:
         user_vote_to_update.vote=user_vote.strip()
         user_vote_to_update.vote_at=datetime.utcnow()

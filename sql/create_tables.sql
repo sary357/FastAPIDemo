@@ -9,7 +9,7 @@ CREATE DATABASE gogobot_log WITH
 -- the following table must BE in pg_default tablespace and database "gogobot_log"
 create table gogobot_log.public.votes (
     id SERIAL,
-    phone varchar(100) not null,
+    phone_number varchar(100) not null,
     query varchar(65535) not null,
     response varchar(65535), 
     vote varchar(100),
@@ -17,7 +17,7 @@ create table gogobot_log.public.votes (
     vote_at timestamptz,
     PRIMARY KEY (id)
 )  TABLESPACE pg_default;  
-CREATE INDEX queries_phone_query_idx ON gogobot_log.public.votes (phone, query);
-CREATE INDEX queries_phone_query_created_idx ON gogobot_log.public.votes (phone, query, created_at);
+CREATE INDEX queries_phone_query_idx ON gogobot_log.public.votes (phone_number, query);
+CREATE INDEX queries_phone_query_created_idx ON gogobot_log.public.votes (phone_number, query, created_at);
 CREATE INDEX queries_created_at_idx ON gogobot_log.public.votes (created_at);
 
