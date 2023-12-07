@@ -4,6 +4,7 @@ TAG_VERSION=0.2.0
 
 build:
 	mkdir -p $(BASEDIR)/log
+	chmod 1777 $(BASEDIR)/log
 	$(DOCKER_CMD) build -t gogotechhk/gogobot-log-api:$(TAG_VERSION) .
 
 start-all:
