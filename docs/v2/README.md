@@ -99,5 +99,5 @@ Note: Unnecessary use of -X or --request, POST is already inferred.
 # 2. TODO items
 - Modify SessionGenerator.py: ideally, we should load db setting from vault. You can search for `TODO` in the code.
 - Put DB in cloud env, e.g. AWS RDS or GCP CloudSQL.
-- Put docker image in Dockerhub.
+- Put gogobot-log-api image in Dockerhub.
 - Prepare YAML files for Kubernetes.
