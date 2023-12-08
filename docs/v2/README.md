@@ -1,4 +1,4 @@
-# 1. How can I use v1?
+# 1. How can I use v2?
 - After launching local development env with no docker, then you can access v2 API by `http://localhost:8081/v2/vote` or `http://localhost:8081/v2/qa/`. You can test it with the command `curl`. The following is the response when receiving a valid request. As you can see here, status code is http `200` (OK) and a json string `{"id":ID, "status":"ok"}`.
 
 ```bash
