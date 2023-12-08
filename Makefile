@@ -13,8 +13,14 @@ start-all:
 start-db:
 	docker-compose up -d db
 
+start-api:
+	docker-compose up -d api
+
 stop-all:
 	docker-compose stop
 
 stop-db:
 	docker-compose stop db
+
+stop-api:
+	docker-compose stop api
