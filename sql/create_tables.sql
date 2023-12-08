@@ -10,14 +10,13 @@ CREATE DATABASE gogobot_log WITH
 create table gogobot_log.public.votes (
     id SERIAL,
     phone_number varchar(100) not null,
-    query varchar(65535) not null,
-    response varchar(65535), 
+    question varchar(65535) not null,
+    answer varchar(65535) not null, 
     vote varchar(100),
     created_at timestamptz not null default current_timestamp,
     vote_at timestamptz,
     PRIMARY KEY (id)
 )  TABLESPACE pg_default;  
-CREATE INDEX queries_phone_query_idx ON gogobot_log.public.votes (phone_number, query);
-CREATE INDEX queries_phone_query_created_idx ON gogobot_log.public.votes (phone_number, query, created_at);
+CREATE INDEX queries_phone_query_idx ON gogobot_log.public.votes (phone_number, question, answer);
 CREATE INDEX queries_created_at_idx ON gogobot_log.public.votes (created_at);
 

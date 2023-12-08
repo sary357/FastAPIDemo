@@ -23,29 +23,31 @@ ENCODEING="utf-8"
 class Vote(BaseModel):
     id: Optional[int] = None
     phone_number: Optional[str] = None
-    query: Optional[str] = None
+    question: Optional[str] = None
+    answer: Optional[str] = None
     vote: str
 
 class QA(BaseModel):
     phone_number: str
-    query: str
-    response: str
+    question: str
+    answer: str
 
 @app.post("/v2/vote/")
 async def save_vote(vote: Vote):
     logger.info('Got 1 vote: %s', vote)
     if vote.id:
         voteProcessor.save_vote_by_id(id=vote.id, user_vote=vote.vote)
-    elif vote.query and vote.phone_number:
-        voteProcessor.save_vote(user_query=vote.query, user_phone=vote.phone_number, user_vote=vote.vote)
+    elif vote.question and vote.phone_number and vote.answer:
+        voteProcessor.save_vote(user_input_question=vote.question, user_phone=vote.phone_number, 
+                                user_vote=vote.vote, user_input_answer=vote.answer)
     else:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid request body")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid request body: missing id or (phone_number + question + response)")
     return {"status": "ok"}
 
 @app.post("/v2/qa/")
 async def save_query(qa: QA):
     logger.info('Got 1 QA: %s', qa)
-    id=voteProcessor.save_query(user_query=qa.query, user_response=qa.response, user_phone=qa.phone_number)
+    id=voteProcessor.save_query(user_input_question=qa.question, user_input_answer=qa.answer, user_phone=qa.phone_number)
     return {"id":id, "status": "ok"}
 
 @app.get("/v2/healthcheck")
