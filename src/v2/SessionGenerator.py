@@ -1,5 +1,8 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+import os
+import logging
+logger = logging.getLogger(__name__)
 class sessionGenerator:
     _instance = None 
     def __new__(cls, *args, **kwargs): 
@@ -8,15 +11,29 @@ class sessionGenerator:
         return cls._instance 
          
     def __init__(self): 
-        self.engine = create_engine(self.__get_db_conn_str__(), echo=True)
+        self.engine = create_engine(self._get_db_conn_str(), echo=True)
         self.session = None
 
-    def __get_db_conn_str__(self)->str:
-        # TODO: please replace this part with your own database connection string
-        #       ideally, you should use connection saved in crdentials store like vault
-        return 'postgresql+psycopg2://postgres:CHANGE_ME@db:5432/gogobot_log' # for docker-compose
-        #return 'postgresql+psycopg2://postgres:CHANGE_ME@localhost:5432/gogobot_log' # for local environment
+    def _get_db_conn_str(self)->str:
+        if self._get_db_conn_str_from_vault():
+            logger.info("Get database connection string from vault")
+            return self._get_db_conn_str_from_vault()
+        elif self._get_db_conn_str_from_env():
+            logger.info("Get database connection string from environment variable (DB_CONN_STR)")
+            return self._get_db_conn_str_from_env()
+        logger.info("Get database connection string from default setting (local database)")
+        return self._get_local_db_conn_str()
     
+    def _get_db_conn_str_from_vault(self)->str:
+        # TODO: please replace this part to get the database connection string from vault
+        return None
+
+    def _get_db_conn_str_from_env(self)->str:
+        return os.environ['DB_CONN_STR'].strip() if 'DB_CONN_STR' in os.environ else None
+    
+    def _get_local_db_conn_str(self)->str:
+        return 'postgresql+psycopg2://postgres:CHANGE_ME@localhost:5432/gogobot_log'
+
     def get_session(self):
         if self.session is None:
             Session = sessionmaker(bind=self.engine)
