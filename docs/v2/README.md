@@ -3,7 +3,7 @@
 
 ```bash
 # If you'd like to save a question/answer pair, you can use the following command.
-$ curl --verbose  -H 'accept: application/json'   -H 'Content-Type: application/json'  -X POST http://localhost:8081/v2/qa/ -d '{"phone_number":"+886930900831", "query":"This is my question", "response":"a response"}'
+$ curl --verbose  -H 'accept: application/json'   -H 'Content-Type: application/json'  -X POST http://localhost:8081/v2/qa/ -d '{"phone_number":"+886930900831", "question":"This is my question", "answer":"a answer"}'
 Note: Unnecessary use of -X or --request, POST is already inferred.
 *   Trying 127.0.0.1:8081...
 * Connected to localhost (127.0.0.1) port 8081 (#0)
@@ -25,8 +25,8 @@ Note: Unnecessary use of -X or --request, POST is already inferred.
 {"id":6,"status":"ok"}
 
 
-# If you'd like to save a vote with phone number + query, you can use the following command.
-$ curl --verbose  -H 'accept: application/json'   -H 'Content-Type: application/json'  -X POST http://localhost:8081/v2/vote/ -d '{"phone_number":"+886930900831", "query":"This is my question", "vote":"up"}'
+# If you'd like to save a vote with phone number + question, you can use the following command.
+$ curl --verbose  -H 'accept: application/json'   -H 'Content-Type: application/json'  -X POST http://localhost:8081/v2/vote/ -d '{"phone_number":"+886930900831", "question":"This is my question",  "answer":"a answer","vote":"up"}'
 Note: Unnecessary use of -X or --request, POST is already inferred.
 *   Trying 127.0.0.1:8081...
 * Connected to localhost (127.0.0.1) port 8081 (#0)
@@ -71,9 +71,9 @@ Note: Unnecessary use of -X or --request, POST is already inferred.
 {"status":"ok"}
 ``` 
 
--  The following is the response when receiving an invalid request. As you can see here, status code is http `4XX` and some json formatted message.
+-  The following is the answer when receiving an invalid request. As you can see here, status code is http `4XX` and some json formatted message.
 ```bash
-$ curl  --verbose -X 'POST'   'http://localhost:8081/v2/vote/'   -H 'accept: application/json'   -H 'Content-Type: application/json'   -d '{  "phone_number": "+8869000000", "query":"QUESTION"}'
+$ curl  --verbose -X 'POST'   'http://localhost:8081/v2/vote/'   -H 'accept: application/json'   -H 'Content-Type: application/json'   -d '{  "phone_number": "+8869000000", "question":"QUESTION"}'
 Note: Unnecessary use of -X or --request, POST is already inferred.
 *   Trying 127.0.0.1:8081...
 * Connected to localhost (127.0.0.1) port 8081 (#0)
@@ -92,7 +92,7 @@ Note: Unnecessary use of -X or --request, POST is already inferred.
 < content-type: application/json
 < 
 * Connection #0 to host localhost left intact
-{"detail":[{"type":"missing","loc":["body","vote"],"msg":"Field required","input":{"phone_number":"+8869000000","query":"QUESTION"},"url":"https://errors.pydantic.dev/2.5/v/missing"}]}
+{"detail":[{"type":"missing","loc":["body","vote"],"msg":"Field required","input":{"phone_number":"+8869000000","question":"QUESTION"},"url":"https://errors.pydantic.dev/2.5/v/missing"}]}
 
 ```
 

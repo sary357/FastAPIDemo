@@ -11,33 +11,34 @@ class vote(Base):
     '''
     phone_number varchar(100) not null,
     query varchar(65535) not null,
-    response varchar(65535), 
+    response varchar(65535) not null, 
     vote varchar(100),
     created_at timestamptz not null default current_timestamp,
     vote_at timestamptz,
     '''
 
     id = Column(Integer, primary_key=True)
-    query = Column(String(65535))
-    response = Column(String(65535))
+    question = Column(String(65535))
+    answer = Column(String(65535))
     vote = Column(String(100))
     phone_number = Column(String(100))
     created_at = Column(DateTime, default=datetime.utcnow)
     vote_at = Column(DateTime)
 
 
-def save_query(user_query:str, user_response:str, user_phone:str)->int:
+def save_query(user_input_question:str, user_input_answer:str, user_phone:str)->int:
     session = SessionGenerator.sessionGenerator().get_session()
-    qa = vote(query=user_query, response=user_response, phone_number=user_phone)
+    qa = vote(question=user_input_question, answer=user_input_answer, phone_number=user_phone)
     session.add(qa)
     session.commit()
     qa_id = qa.id
     session.close()
     return qa_id
 
-def save_vote(user_query:str, user_phone:str, user_vote:str):
+def save_vote(user_input_question:str, user_phone:str, user_input_answer:str, user_vote:str):
     session = SessionGenerator.sessionGenerator().get_session()
-    user_vote_to_update=session.query(vote).filter_by(query=user_query, phone_number=user_phone).first()
+    user_vote_to_update=session.query(vote).filter_by(question=user_input_question, phone_number=user_phone,
+                                                       answer=user_input_answer).first()
     if user_vote_to_update:
         user_vote_to_update.vote=user_vote.strip()
         user_vote_to_update.vote_at=datetime.utcnow()
