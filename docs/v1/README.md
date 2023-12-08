@@ -86,7 +86,7 @@ $ cat /tmp/user_input.log
 
 
 - P.S.:
-  - The log file `access.log` will be rotated when file size is about to 10MB. The old log file will be saved as `access.log.X` like `access.log.1`. My setting will keep last 50 `access.log` files. If you want to change the setting, you can modify the file `conf/logging.conf`.
+  - The log file `access.log` will be rotated when file size is about to 10MB. The old log file will be saved as `access.log.X` like `access.log.1`. My setting will keep last 5 `access.log` files. If you want to change the setting, you can modify the file `conf/logging.conf`.
   - The log file `user.log` will be NOT rotated and will not be removed. If you want to change the setting, you can modify the file `conf/logging.conf`.
   - The format of the field `log_time` is `YYYY-MM-DD HH:MM:SS +/-HOUR`. eg: `2021-09-27 07:26:40 +0800`. That means local time is 7:26:40 AM, 27th, September, 2021 and time difference between local time and UTC is 8 hours. UTC time is 23:26:40 PM, 26th, September, 2021.
   - DON'T MODIFY any log file in `log/`. Otherwise, the script `process_log.py` will not work.

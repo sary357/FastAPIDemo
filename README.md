@@ -42,8 +42,8 @@ $ pip install -r requirements.txt
 ```
 
 #### 3.1.2. prepare the database
-- Please create a PostgreSQL database in your local env and execute the [SQL](../../sql/create_tables.sql) to create the tables.
-- change the database connection string in the function `__get_db_conn_str__(self)`  in the file [SessionGenerator.py](../../src/v2/SessionGenerator.py). It's supposed to use environment variable to store the database connection string. But I don't want to expose my database connection string in the git repo. So, I just hard code it here.
+- Please create a PostgreSQL database in your local env and execute the `create_tables.sql` to create the tables.
+- make sure `DB_CONN_STR`, `POSTGRES_USER`, and `POSTGRES_PASSWORD` are correct in the file `docker-compose.yml` according to your env.
 
 #### 3.1.3. Run the project
 - You can launch the project by the script `start.sh` or by the command `uvicorn`.
@@ -75,7 +75,7 @@ $ docker-compose up -d
 $ make start-all
 ```
 #### 3.2.3 create table schema
-- Because [docker-compose.yml](../../docker-compose.yml) already defined a postgresql DB container, what you need to do is to execute the [SQL](../../sql/create_tables.sql) to create all tables.
+- Because `docker-compose.yml` already defined a postgresql DB container, what you need to do is to execute the `create_tables.sql` to create all tables.
 
 #### 3.2.3 make sure the container is running
 - check the container is running by the following command.
@@ -108,8 +108,20 @@ $ make start-db
 # stop db container
 $ docker-compose stop db
 
-# or you can use "make start-db" to start db container.
+# or you can use "make stop-db" to stop db container.
 $ make stop-db
+
+# start api container
+$ docker-compose up -d api
+
+# or you can use "make start-api" to start api container.
+$ make start-api
+
+# stop api container
+$ docker-compose stop api
+
+# or you can use "make stop-api" to start api container.
+$ make stop-api
 ```
 
 
@@ -118,7 +130,7 @@ $ make stop-db
 ```bash
 $ make start-db
 ```
-- Update the database connection string in the file [SessionGenerator.py](../../src/v2/SessionGenerator.py) to your own database connection string or change the function `def __get_db_conn_str__(self)->str:`  in the file [SessionGenerator.py](../../src/v2/SessionGenerator.py). Please use correct connection string.
+- make sure `DB_CONN_STR`, `POSTGRES_USER`, and `POSTGRES_PASSWORD` are correct in the file `docker-compose.yml` according to your env.
 - You can run pytest by the following command. btw, my test cases so far only support v2.
 ```bash
 $ pytest test_main.py

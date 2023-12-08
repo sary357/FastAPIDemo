@@ -95,3 +95,9 @@ Note: Unnecessary use of -X or --request, POST is already inferred.
 {"detail":[{"type":"missing","loc":["body","vote"],"msg":"Field required","input":{"phone_number":"+8869000000","query":"QUESTION"},"url":"https://errors.pydantic.dev/2.5/v/missing"}]}
 
 ```
+
+# 2. TODO items
+- Modify SessionGenerator.py: ideally, we should load db setting from vault. You can search for `TODO` in the code.
+- Put DB in cloud env, e.g. AWS RDS or GCP CloudSQL.
+- Put gogobot-log-api image in Dockerhub.
+- Prepare YAML files for Kubernetes.
