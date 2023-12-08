@@ -44,7 +44,7 @@ def save_vote(user_input_question:str, user_phone:str, user_input_answer:str, us
         user_vote_to_update.vote_at=datetime.utcnow()
         session.commit()
     else:
-        logger.error("Cannot find the query: \""+user_query+"\" and phone: \""+user_phone+"\"")
+        logger.error("Cannot find the query: \""+user_input_question+"\" and phone: \""+user_phone+"\""+ " and answer: \""+user_input_answer+"\"")
     session.close()
 
 def save_vote_by_id(id:int, user_vote:str):
