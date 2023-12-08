@@ -108,7 +108,7 @@ $ make start-db
 # stop db container
 $ docker-compose stop db
 
-# or you can use "make start-db" to start db container.
+# or you can use "make stop-db" to stop db container.
 $ make stop-db
 
 # start api container
@@ -120,7 +120,7 @@ $ make start-api
 # stop api container
 $ docker-compose stop api
 
-# or you can use "make start-api" to start api container.
+# or you can use "make stop-api" to start api container.
 $ make stop-api
 ```
 
