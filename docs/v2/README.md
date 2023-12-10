@@ -98,6 +98,7 @@ Note: Unnecessary use of -X or --request, POST is already inferred.
 
 # 2. TODO items
 - Modify SessionGenerator.py: ideally, we should load db setting from vault. You can search for `TODO` in the code.
+- CICD pipeline: we should have a CICD pipeline to build docker image and deploy it to k8s with git actions.
 - Put DB in cloud env, e.g. AWS RDS or GCP CloudSQL.
 - Put gogobot-log-api image in Dockerhub.
 - Prepare YAML files for Kubernetes.
