@@ -21,8 +21,6 @@ This project is used to save all input into a file as long as it is a POST reque
 ├── Makefile: only for creating gogobot-log-api docker image. 
 ├── requirements.txt: necessary packages to run the project
 |── docker-compose.yml: docker-compose.yml. Used to create gogobot-log-api docker image and gogobot-log-db docker image.
-├── scripts
-|   └── process_log.py: extract user input from the log file. This is only for v1.
 ├── conf
 |   └── logging.conf: logging configuration file
 └── sql
@@ -139,7 +137,7 @@ $ pytest test_main.py
 
 
 ## How can I test v1 and v2 API? ##
-- v1: 
+- v1 (Deprecated): 
   - [README.md](docs/v1/README.md)
 - v2:
   - [README.md](docs/v2/README.md)
