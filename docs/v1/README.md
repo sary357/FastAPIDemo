@@ -1,3 +1,4 @@
+# Deprecated. please refer to v2/README.md
 # 1. How can I use v1?
 - After launching local development env with no docker, You can access the API by http://localhost:8081/v1/save-vote. You can test it with the command `curl`. The following is the response when receiving a valid request. As you can see here, status code is http `200` (OK) and a empty string.
 

@@ -4,8 +4,6 @@ services:
     image: gogotechhk/gogobot-log-api:0.2.0
     ports:
       - "8081:8081"
-    volumes:
-      - ~/gogobot-log-api/log/:/opt/log/
     environment:
       DB_CONN_STR: postgresql+psycopg2://postgres:CHANGE_ME@db:5432/gogobot_log
     container_name: gogobot-log-api
