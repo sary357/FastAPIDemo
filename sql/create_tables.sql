@@ -21,7 +21,8 @@ CREATE INDEX queries_phone_query_idx ON gogobot_log.public.votes (phone_number, 
 CREATE INDEX queries_created_at_idx ON gogobot_log.public.votes (created_at);
 
 create role readonly;
-grant usage on schema public to readonly;
-grant select on all tables in schema public to readonly;
+GRANT usage ON schema public TO readonly;
+GRANT SELECT ON ALL TABLES IN schema public TO readonly;
+GRANT SELECT ON ALL SEQUENCES IN schema public TO readonly;
 create user recsys with password 'CHANGE_ME';
-grant readonly to recsys;
+GRANT readonly to recsys;
