@@ -1,5 +1,6 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String,DateTime
+from sqlalchemy import select
 from datetime import datetime
 from src.v2 import SessionGenerator
 import logging
@@ -57,3 +58,16 @@ def save_vote_by_id(id:int, user_vote:str):
     else:
         logger.error("Cannot find the id: \""+str(id)+"\"")
     session.close()
+
+def health_check()->bool:
+    session = SessionGenerator.sessionGenerator().get_session()
+    try:
+        session.execute(select(1))
+        return True
+    except Exception as e:
+        logger.error("DB is not ready.")
+        logger.error("Error in health check: "+str(e))
+        return False
+    finally:
+        session.close()
+

@@ -49,7 +49,7 @@ Note: Unnecessary use of -X or --request, POST is already inferred.
 
 
 # If you'd like to save a vote with id + vote, you can use the following command.
-$ curl --verbose  -H 'accept: application/json'   -H 'Content-Tplication/json'  -X POST http://localhost:8081/v2/vote/ -d '{"id":6, "vote":"up"}'
+$ curl --verbose  -H 'accept: application/json'  -H 'Content-Type: application/json'  -X POST http://localhost:8081/v2/vote/ -d '{"id":6, "vote":"up"}'
 Note: Unnecessary use of -X or --request, POST is already inferred.
 *   Trying 127.0.0.1:8081...
 * Connected to localhost (127.0.0.1) port 8081 (#0)

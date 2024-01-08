@@ -50,10 +50,17 @@ async def save_query(qa: QA):
     id=voteProcessor.save_query(user_input_question=qa.question, user_input_answer=qa.answer, user_phone=qa.phone_number)
     return {"id":id, "status": "ok"}
 
-@app.get("/v2/healthcheck")
+@app.get("/v2/health-check")
 async def health_check():
-    return {"status": "ok"}
+    if voteProcessor.health_check():
+        return {"status": "ok"}
+    else:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @app.get("/v1/health-check")
 async def health_check():
-    return {"status": "ok"}
+    if voteProcessor.health_check():
+        return {"status": "ok"}
+    else:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
