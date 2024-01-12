@@ -11,10 +11,6 @@ class sessionGenerator:
             cls._instance.engine = create_engine(cls._instance._get_db_conn_str(), echo=True)
         return cls._instance 
          
-    #def __init__(self): 
-       # self.engine = create_engine(self._get_db_conn_str(), echo=True)
-    #    self.session = None
-
     def _get_db_conn_str(self)->str:
         if self._get_db_conn_str_from_vault():
             logger.info("Get database connection string from vault")
@@ -36,8 +32,5 @@ class sessionGenerator:
         return 'postgresql+psycopg2://postgres:CHANGE_ME@localhost:5432/gogobot_log'
 
     def get_session(self):
-        #if self.session is None:
-        #    Session = sessionmaker(bind=self.engine)
-        #    self.session = Session()
         return sessionmaker(bind=self.engine)()
 
